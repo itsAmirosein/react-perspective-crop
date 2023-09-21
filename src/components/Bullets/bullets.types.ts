@@ -1,7 +1,9 @@
+import { ReactElement } from "react";
+import { bulletDataType } from "../../App.types";
+
 export interface BulletsProps {
   bulletData: bulletDataType;
-}
-
-interface bulletDataType {
-  id: number;
+  bulletSize: number;
+  handleBulletsData: (value: bulletDataType) => void;
+  icon: ReactElement | string;
 }

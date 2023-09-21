@@ -1,25 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./bullets.scss";
 import { BulletsProps } from "./bullets.types";
+import { Bullet } from "../styled-components/bullets";
 
-function Bullets({ bulletData }: BulletsProps) {
-  const dragItemRef = useRef<HTMLInputElement>(null);
-  const [cordinates, setCordinates] = useState({
-    x: 0,
-    y: 0,
-  });
+function Bullets({
+  bulletData,
+  bulletSize,
+  handleBulletsData,
+  icon,
+}: BulletsProps) {
   let R = {
     x: 0,
     y: 0,
   };
-
-  useEffect(() => {
-    if (dragItemRef.current)
-      setCordinates({
-        x: dragItemRef.current.offsetLeft + dragItemRef.current.offsetWidth / 2,
-        y: dragItemRef.current.offsetTop + dragItemRef.current.offsetHeight / 2,
-      });
-  }, []);
 
   const handleDragStart = (e: any, index: any) => {
     var bounds = e.target.getBoundingClientRect();
@@ -28,22 +20,25 @@ function Bullets({ bulletData }: BulletsProps) {
   };
 
   const handleDragEnd = (e: any) => {
-    setCordinates({
+    handleBulletsData({
+      id: bulletData.id,
       x: e.clientX + R.x,
       y: e.clientY + R.y,
     });
   };
-
   return (
-    <div
-      ref={dragItemRef}
-      className={`bullet-container_${bulletData.id}`}
+    <Bullet
+      $cordinate={{
+        left: bulletData.x - bulletSize / 2,
+        top: bulletData.y - bulletSize / 2,
+      }}
+      $bulletSize={bulletSize}
       draggable
-      onDragStart={(e) => handleDragStart(e, bulletData.id)}
-      onDragEnd={(e) => handleDragEnd(e)}
+      onDragStart={(e: any) => handleDragStart(e, bulletData.id)}
+      onDragEnd={(e: any) => handleDragEnd(e)}
     >
-      Bullet{bulletData.id}
-    </div>
+      {icon ?? icon}
+    </Bullet>
   );
 }
 
