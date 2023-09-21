@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Bullet from "./components/Bullets/bullets";
 import plus from "./assets/icons/plus-24.png";
 import { bulletDataType } from "./App.types";
 import { BulletContainer } from "./components/styled-components/bullets";
+import { Canvas } from "./components/styled-components/canvas";
 
 function App() {
   const [bulletsData, setBulletsData] = useState<bulletDataType[]>([
@@ -11,6 +12,21 @@ function App() {
     { id: 3, x: 400, y: 20 },
     { id: 4, x: 254, y: 349 },
   ]);
+  const canvasRef = useRef<any>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.beginPath();
+    ctx.moveTo(bulletsData[0].x, bulletsData[0].y);
+    ctx.lineTo(bulletsData[1].x, bulletsData[1].y);
+    ctx.lineTo(bulletsData[3].x, bulletsData[3].y);
+    ctx.lineTo(bulletsData[2].x, bulletsData[2].y);
+    ctx.lineTo(bulletsData[0].x, bulletsData[0].y);
+    ctx.stroke();
+  }, [bulletsData]);
 
   const handleBulletsData = (value: bulletDataType) => {
     const findBulletIndex = bulletsData.findIndex(
@@ -39,10 +55,11 @@ function App() {
               bulletData={bullet}
               bulletSize={20}
               handleBulletsData={handleBulletsData}
-              icon={<img src={plus} width={10} height={10} />}
+              icon={`${bullet.id}`}
             />
           );
         })}
+        <Canvas ref={canvasRef} />
       </BulletContainer>
     </div>
   );
