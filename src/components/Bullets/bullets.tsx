@@ -19,7 +19,7 @@ function Bullets({
     R.y = (Math.floor(bounds.bottom) + Math.floor(bounds.top)) / 2 - e.clientY;
   };
 
-  const handleDragEnd = (e: any) => {
+  const handleDrag = (e: any) => {
     handleBulletsData({
       id: bulletData.id,
       x: e.clientX + R.x,
@@ -35,7 +35,8 @@ function Bullets({
       $bulletSize={bulletSize}
       draggable
       onDragStart={(e: any) => handleDragStart(e, bulletData.id)}
-      onDragEnd={(e: any) => handleDragEnd(e)}
+      onDrag={(e: any) => handleDrag(e)}
+      onDragEnd={(e: any) => handleDrag(e)}
     >
       {icon ?? icon}
     </Bullet>
