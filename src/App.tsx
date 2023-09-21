@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import Bullet from "./components/Bullets/bullets";
-import "./App.scss";
-
-const bulletsData = [
-  {
-    id: 1,
-    x1: 0,
-    y1: 0,
-  },
-  { id: 2, x2: 0, y2: 0 },
-  { id: 3, x3: 0, y3: 0 },
-  { id: 4, x4: 0, y4: 0 },
-];
+import plus from "./assets/icons/plus-24.png";
+import { bulletDataType } from "./App.types";
+import { BulletContainer } from "./components/styled-components/bullets";
 
 function App() {
+  const [bulletsData, setBulletsData] = useState<bulletDataType[]>([
+    { id: 1, x: 100, y: 70 },
+    { id: 2, x: 200, y: 90 },
+    { id: 3, x: 400, y: 20 },
+    { id: 4, x: 254, y: 349 },
+  ]);
+
+  const handleBulletsData = (value: bulletDataType) => {
+    const findBulletIndex = bulletsData.findIndex(
+      (item) => item.id === value.id
+    );
+    const copyBulletsData = [...bulletsData];
+    copyBulletsData[findBulletIndex] = value;
+    setBulletsData(copyBulletsData);
+  };
+
   return (
     <div
       style={{
@@ -24,11 +31,19 @@ function App() {
         // alignItems: "center",
       }}
     >
-      <div className="container">
+      <BulletContainer>
         {bulletsData.map((bullet) => {
-          return <Bullet key={bullet.id} bulletData={bullet} />;
+          return (
+            <Bullet
+              key={bullet.id}
+              bulletData={bullet}
+              bulletSize={20}
+              handleBulletsData={handleBulletsData}
+              icon={<img src={plus} width={10} height={10} />}
+            />
+          );
         })}
-      </div>
+      </BulletContainer>
     </div>
   );
 }
