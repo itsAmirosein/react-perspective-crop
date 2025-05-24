@@ -11,6 +11,7 @@ export const SelectedImage = styled.img<{
     `polygon(${$cordinates[0].x}px ${$cordinates[0].y}px,${$cordinates[1].x}px ${$cordinates[1].y}px,${$cordinates[2].x}px ${$cordinates[2].y}px,${$cordinates[3].x}px ${$cordinates[3].y}px)`};
   z-index: 100;
   position: absolute;
+  user-select: none;
 `;
 
 export const MainImage = styled.img`
@@ -18,6 +19,7 @@ export const MainImage = styled.img`
   height: 100%;
   position: absolute;
   z-index: -1;
+  user-select: none;
 `;
 
 export const OutputBox = styled.div`

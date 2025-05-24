@@ -21,6 +21,13 @@ function Bullets({
   });
 
   const handleDragStart = (e: any, BulletId: number) => {
+    const transparentImg = new Image();
+
+    transparentImg.src =
+      "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
+    e.dataTransfer.setDragImage(transparentImg, 0, 0); //remove ghost effect
+
     const bounds = e.target.getBoundingClientRect();
 
     R.current.x =
@@ -32,6 +39,8 @@ function Bullets({
   };
 
   const handleDrag = (e: DragEvent<HTMLElement>) => {
+    e.preventDefault();
+
     if (
       (e.clientX !== point.current.x || e.clientY !== point.current.y) &&
       (Math.abs(e.clientX - point.current.x) !== point.current.x ||
@@ -49,6 +58,8 @@ function Bullets({
   };
 
   const handleDragEnd = (e: DragEvent<HTMLElement>) => {
+    e.preventDefault();
+
     onDragEnd({
       id: bulletData.id,
       x: e.clientX + R.current.x,

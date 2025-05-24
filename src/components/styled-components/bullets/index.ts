@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import snap from "../../../assets/snap4.png";
 
 export const BulletContainer = styled.div`
   border: 1px solid black;

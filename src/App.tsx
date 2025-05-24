@@ -38,18 +38,20 @@ function App() {
   };
 
   const handleOnDragEnd = (value: bulletDataType) => {
-    handleBulletsData(value);
+    if (value.x === 0 && value.y === 0) {
+      handleBulletsData(value);
+    }
 
     setIsDragging(false);
   };
 
   return (
-    <>
+    <div style={{ display: "flex" }}>
       <BulletContainer>
         {bulletsData.map((bullet) => {
           return (
             <Bullet
-              key={bullet.id}
+              key={`${bullet.id}`}
               bulletData={bullet}
               bulletSize={20}
               onDragStart={handleDragStart}
@@ -66,7 +68,7 @@ function App() {
       <OutputBox>
         <OutputImage src={snap4} $cordinates={bulletsData} />
       </OutputBox>
-    </>
+    </div>
   );
 }
 
