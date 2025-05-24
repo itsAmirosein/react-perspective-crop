@@ -4,6 +4,8 @@ import { bulletDataType } from "../../App.types";
 export interface BulletsProps {
   bulletData: bulletDataType;
   bulletSize: number;
-  handleBulletsData: (value: bulletDataType) => void;
+  onDragStart: (value: number) => void;
+  onDrag: (value: bulletDataType) => void;
+  onDragEnd: (value: bulletDataType) => void;
   icon: ReactElement | string;
 }

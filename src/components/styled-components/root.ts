@@ -1,4 +1,16 @@
 import { Bullet, BulletContainer } from "./bullets/index";
-import { SelectedImage, MainImage } from "./ImagesComponents";
+import {
+  SelectedImage,
+  MainImage,
+  OutputImage,
+  OutputBox,
+} from "./ImagesComponents";
 
-export { Bullet, BulletContainer, SelectedImage, MainImage };
+export {
+  Bullet,
+  BulletContainer,
+  SelectedImage,
+  MainImage,
+  OutputImage,
+  OutputBox,
+};
