@@ -1,6 +1,17 @@
 {
   "name": "react-prespective-crop",
   "version": "0.1.0",
+  "description": "react image cropper",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -10,7 +21,6 @@
     "@types/node": "^16.18.41",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "node-sass": "^7.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -44,5 +54,9 @@
   },
   "devDependencies": {
     "sass": "^1.66.1"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

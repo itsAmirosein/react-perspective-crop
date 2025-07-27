@@ -1,37 +1,56 @@
-import React, { MouseEvent, useRef, useState } from "react";
-import Bullet from "./components/Bullets/bullets";
-import {
-  BulletContainer,
-  MainImage,
-  SelectedImage,
-  OutputImage,
-  OutputBox,
-} from "./components/styled-components/root";
+import React, { useEffect, useRef, useState } from "react";
 
-import type { bulletDataType } from "./App.types";
+import Bullet from "./components/Bullets";
+import { BulletContainer, MainImage, SelectedImage } from "./styled-components";
+import type { IBulletData, IAppProps } from "./App.types";
+import { imageProcessor, downloadImage } from "./utils";
 
-import snap4 from "./assets/snap4.png";
-
-function App() {
+function App(
+  props: IAppProps = {
+    bulletsDefaultCordinates: [],
+    imageSrc: "",
+    onChange: () => {},
+    downloadCroppedImg: () => {},
+  }
+) {
   const container = useRef<any>(null);
   const invisibleItem = useRef<any>(null);
 
-  const [bulletsData, setBulletsData] = useState<bulletDataType[]>([
-    { id: 0, x: 0, y: 70 },
-    { id: 1, x: 200, y: 90 },
-    { id: 2, x: 400, y: 20 },
-    { id: 3, x: 254, y: 349 },
-  ]);
-  const [activeBulletId, setActiveBulletId] = useState<number>();
+  const [bulletsData, setBulletsData] = useState<IBulletData[]>(
+    props.bulletsDefaultCordinates
+  );
+  const [activeBulletIndex, setActiveBulletIndex] = useState<number>();
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (isDragging) {
+      props.onChange(bulletsData);
+    }
+
+    if (props.downloadCroppedImg) {
+      props.downloadCroppedImg(download);
+    }
+  }, [bulletsData]);
+
   const handleDragStart = (activeBulletId: number) => {
-    setActiveBulletId(activeBulletId);
-    setIsDragging(true);
+    const activeIndex = bulletsData.findIndex(
+      (item) => item.id === activeBulletId
+    );
+
+    if (activeIndex !== -1) {
+      setActiveBulletIndex(activeIndex);
+      setIsDragging(true);
+    }
   };
 
-  const handleBulletsData = (value: bulletDataType) => {
-    if (isDragging && activeBulletId !== undefined) {
+  const download = async () => {
+    const blob = await imageProcessor(props.imageSrc, bulletsData, 500, 500);
+
+    downloadImage(blob);
+  };
+
+  const handleBulletsData = (value: IBulletData) => {
+    if (isDragging && activeBulletIndex !== undefined) {
       const localX = value.x - container?.current?.offsetLeft;
       const localY = value.y - container?.current?.offsetTop;
 
@@ -43,7 +62,7 @@ function App() {
       ) {
         const copyBulletsData = [...bulletsData];
 
-        copyBulletsData[activeBulletId] = {
+        copyBulletsData[activeBulletIndex] = {
           ...value,
           x: localX,
           y: localY,
@@ -54,7 +73,7 @@ function App() {
     }
   };
 
-  const handleOnDragEnd = (value: bulletDataType) => {
+  const handleOnDragEnd = (value: IBulletData) => {
     if (value.x === 0 && value.y === 0) {
       handleBulletsData(value);
     }
@@ -63,16 +82,12 @@ function App() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "90%",
-        height: "100vh",
-      }}
-    >
-      <BulletContainer ref={container}>
+    <div style={{ display: "flex", gap: "10px" }}>
+      <BulletContainer
+        ref={container}
+        $width={props.width}
+        $height={props.height}
+      >
         {bulletsData.map((bullet) => {
           return (
             <Bullet
@@ -87,13 +102,9 @@ function App() {
             />
           );
         })}
-        <MainImage src={snap4} />
-        <SelectedImage src={snap4} $cordinates={bulletsData} />
+        <MainImage src={props.imageSrc} />
+        <SelectedImage src={props.imageSrc} $cordinates={bulletsData} />
       </BulletContainer>
-
-      <OutputBox>
-        <OutputImage src={snap4} $cordinates={bulletsData} />
-      </OutputBox>
 
       <div
         ref={invisibleItem}
@@ -106,7 +117,7 @@ function App() {
           top: "-1000px",
           zIndex: "-1",
         }}
-      ></div>
+      />
     </div>
   );
 }
