@@ -1,6 +1,6 @@
 {
   "name": "react-perspective-crop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A flexible React image cropper with draggable custom-shaped bullets and export capabilities.",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -22,9 +22,9 @@
   "author": "Amirhossein beygi",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "styled-components": "^6.0.0"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
+    "styled-components": ">=^6.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
