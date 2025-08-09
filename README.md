@@ -24,9 +24,9 @@ pnpm add react-perspective-crop
 
 This package requires the following peer dependencies to be installed in your project:
 
-- `react` (version ^18.0.0)
-- `react-dom` (version ^18.0.0)
-- `styled-components` (version ^6.0.0)
+- `react` (version >= 16.8.0 )
+- `react-dom` (version >= 16.8.0)
+- `styled-components` (version >= 6.0.0)
 
 Please ensure these packages are installed in your project to avoid warnings or errors.
 
