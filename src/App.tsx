@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import Bullet from "./components/Bullets";
+import Bullet from "./components/Bullet";
 import { BulletContainer, MainImage, SelectedImage } from "./styled-components";
 import type { IBulletData, IAppProps } from "./App.types";
 import { imageProcessor, downloadImage } from "./utils";
@@ -44,7 +44,14 @@ function App(
   };
 
   const download = async () => {
-    const blob = await imageProcessor(props.imageSrc, bulletsData, 500, 500);
+    const containerBox = container.current.getBoundingClientRect();
+
+    const blob = await imageProcessor(
+      props.imageSrc,
+      bulletsData,
+      containerBox.width,
+      containerBox.height
+    );
 
     downloadImage(blob);
   };
@@ -82,7 +89,7 @@ function App(
   };
 
   return (
-    <div style={{ display: "flex", gap: "10px" }}>
+    <>
       <BulletContainer
         ref={container}
         $width={props.width}
@@ -118,7 +125,7 @@ function App(
           zIndex: "-1",
         }}
       />
-    </div>
+    </>
   );
 }
 

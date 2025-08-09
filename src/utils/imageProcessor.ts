@@ -4,8 +4,8 @@ import { IBulletData } from "../App.types";
 const imageProcessor = async (
   imageSrc: string,
   bulletsData: IBulletData[],
-  width: number = 500,
-  height: number = 500
+  width: number,
+  height: number
 ): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     const img = new Image();

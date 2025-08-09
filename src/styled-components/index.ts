@@ -34,7 +34,7 @@ export const BulletContainer = styled.div<{
   }
 `;
 
-export const Bullet = styled.div<{
+export const BulletItem = styled.div<{
   $cordinate?: { left: number; top: number };
   $bulletSize?: number;
 }>`

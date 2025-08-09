@@ -1,0 +1,21 @@
+# Source files
+src/
+node_modules/
+
+# Config files
+tsconfig.json
+tsup.config.ts
+.prettierrc
+.prettierignore
+.vscode/
+.pnpmfile.cjs
+
+# pnpm store
+.pnpm-store/
+
+# Env files
+.env
+
+# Logs
+*.log
+npm-debug.log*

@@ -1,46 +1,95 @@
-# Getting Started with Create React App
+# ReactPerspectiveCrop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ReactPerspectiveCrop is a powerful React component that allows users to crop images in any custom shape by positioning draggable bullets, offering precise control over crop regions along with seamless image data retrieval and download capabilities.
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+```bash
+npm install react-perspective-crop
+```
 
-### `npm start`
+or
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+yarn add react-perspective-crop
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+or
 
-### `npm test`
+```bash
+pnpm add react-perspective-crop
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Peer Dependencies
 
-### `npm run build`
+This package requires the following peer dependencies to be installed in your project:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `react` (version ^18.0.0)
+- `react-dom` (version ^18.0.0)
+- `styled-components` (version ^6.0.0)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Please ensure these packages are installed in your project to avoid warnings or errors.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Props
 
-### `npm run eject`
+| Prop Name                  | Type                                                                | Description                                                          |
+| -------------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `imageSrc`                 | `string`                                                            | The source URL of the image to be cropped.                           |
+| `bulletsDefaultCordinates` | `Array<{id:number,  x: number, y: number }>`                        | The default positions of the draggable bullets within the container. |
+| `onChange`                 | `(coordinates: Array<{ id:number, x: number, y: number }>) => void` | Callback function triggered whenever bullet positions change.        |
+| `downloadCroppedImg`       | `(fn: Function) => void`                                            | Function to download the cropped image (accessible via ref).         |
+| `width`                    | `number \| string`                                                  | The width of the container in pixels.                                |
+| `height`                   | `number \| string`                                                  | The height of the container in pixels.                               |
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Usage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```tsx
+import React, { useRef, useState } from "react";
+import ReactCropper from "react-cropper-component";
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+export default function App() {
+  const [coordinates, setCoordinates] = useState([
+    { id: 1, x: 10, y: 20 },
+    { id: 2, x: 40, y: 50 },
+    { id: 3, x: 600, y: 50 },
+    { id: 4, x: 40, y: 500 },
+  ]);
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  const downloadFunction = useRef<Function>(null);
 
-## Learn More
+  const handleDownload = () => {
+    if (downloadFunction.current) {
+      downloadFunction.current();
+    }
+  };
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  return (
+    <div>
+      <ReactCropper
+        imageSrc="/example.jpg"
+        bulletsDefaultCordinates={coordinates}
+        onChange={(coords) => setCoordinates(coords)}
+        downloadCroppedImg={(fn: Function) => {
+          downloadFunction.current = fn;
+        }}
+        width={500}
+        height={400}
+      />
+      <button onClick={handleDownload}>Download Cropped Image</button>
+    </div>
+  );
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Notes
+
+- The image will always be displayed within the container's dimensions.
+- Bullets can always be moved within their container boundaries, unless the default coordinates provided place them outside of the container’s bounds.
+- To download the cropped image, you must use a ref:
+  - The downloadCroppedImg prop gives you a function through its argument.
+  - You should store that function in a ref and call it whenever you want to download the image.
+  - If you call this function directly inside the downloadCroppedImg prop callback, the image will be downloaded immediately on component mount.
+
+## License
+
+MIT License
